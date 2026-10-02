@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+project:
+  name: "Continuity of solutions to abstract linear control systems"
+  description: >-
+    For abstract linear control systems on real or complex Banach spaces with
+    L-infinity inputs, the operator norm of the input map tends to zero at time
+    zero, and every input response is continuous on the nonnegative time axis.
+    The hypotheses are strong continuity of the semigroup, bounded linear input
+    maps, and the concatenation identity; no integral representation is assumed.
+    The proof uses a diagonal consequence of Phillips' lemma, proved in the
+    repository, and a semigroup doubling argument.
+  authors: ["Frédéric Marbach"]
+  responsible_maintainers: ["Frédéric Marbach"]
+  license: "Apache-2.0"
+classification:
+  arxiv: ["math.OC", "math.FA"]
+  msc2020: ["93C25", "47D06"]
+sources:
+  - title: "Continuity of solutions to abstract linear control systems"
+    authors: ["Frédéric Marbach"]
+    type: paper
+    relationship: formalizes
+    location: >-
+      Unpublished manuscript supplied by the author on 2026-10-03, Section 1.3,
+      Theorem 1.5 (thm:zero-class) and Corollary 1.6 (cor:Phi-continuous),
+      with their proofs in Section 2.
+    author_endorsement: participated
+    note: >-
+      No public URL or identifier yet exists. The source and its informal
+      authorship history are reported by the author. Challenge.lean reproduces
+      the precise claims being formalized; this is not a claim of independently
+      established novelty or priority.
+  - title: "Admissibility of unbounded control operators"
+    authors: ["George Weiss"]
+    type: paper
+    relationship: background
+    id: "doi:10.1137/0327028"
+    location: "SIAM Journal on Control and Optimization 27 (1989), 527–545, Problem 2.4"
+    note: "Source of the endpoint time-continuity question discussed in the manuscript."
+  - title: "On linear transformations"
+    authors: ["R. S. Phillips"]
+    type: paper
+    relationship: background
+    location: "Transactions of the American Mathematical Society 48 (1940), 516–541, Corollary 3.4"
+    note: >-
+      Classical Phillips lemma cited by the manuscript. The development proves
+      its diagonal consequence by a finite-sum recursive selection argument,
+      and derives the operator-valued consequence needed by the main theorem.
+  - title: "ISS and integral ISS coincide for linear systems with bounded inputs"
+    authors: ["Sahiba Arora", "Philip Preußler", "Felix Schwenninger"]
+    type: paper
+    relationship: background
+    id: "arXiv:2609.40348v1"
+    location: "https://arxiv.org/abs/2609.40348v1"
+    note: >-
+      Independent related preprint posted on 2026-09-30 and acknowledged in
+      the source manuscript. It gives a stronger Orlicz-admissibility conclusion
+      for systems admitting a control-operator representation and establishes
+      continuity of their mild solutions. It is not a dependency of this Lean
+      proof, which treats abstract input maps without such a representation.
+related_formalizations: []
+status:
+  scope: >-
+    The main zero-class theorem and continuity corollary for L-infinity abstract
+    input maps, over RCLike scalars with complete state and input spaces.
+    Supporting semigroup and diagonal Phillips results are proved. The full
+    absolute-sum Phillips lemma, finite-p examples, invariant-mean construction,
+    nonrepresentation example and Orlicz nonadmissibility results are not
+    formalized. The full-state continuity consequence is not a compared declaration.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+  main_results:
+    - declaration: "PalomarALCS.zero_class"
+      file: "Solution.lean"
+      comparator_config: "comparator.json"
+      sorry_count: 0
+    - declaration: "PalomarALCS.continuousOn_Phi"
+      file: "Solution.lean"
+      comparator_config: "comparator.json"
+      sorry_count: 0
+automation:
+  methods:
+    - method: copilot
+      models: ["GPT-6 Pro", "Opus 5.5"]
+      tool_setup: "AI-assisted mathematics and Lean proof development, as reported by the author."
+    - method: agent
+      models: ["GPT-6"]
+      framework: "Codex"
+      tool_setup: >-
+        Palomar packaging, module-system port, dependency upgrade, local Lean
+        build and axiom checks, and comparison with the supplied manuscript.
+    - method: manual
+      tool_setup: "Author's mathematical notes and revision of the manuscript."
+  notes: >-
+    The sole human author reports that GPT-6 Pro and Opus 5.5 wrote parts of
+    the formalization. The manuscript records GPT-6 Pro's identification of
+    Phillips' lemma and production of the main argument from the author's notes,
+    followed by human revision with Opus 5.5. No complete model-by-declaration
+    attribution or prompt log was supplied. Costs and original effort were not tracked.
+fidelity:
+  divergences: >-
+    No known weakening of the two main statements for real or complex Banach
+    spaces. Time families are defined on the real line but only nonnegative
+    times matter. Inputs are a.e. classes for restricted Lebesgue measure,
+    with concatenation expressed by a.e. equality. The packing uses zero-padded
+    disjoint intervals before time 1 rather than consecutive intervals.
+    Only the diagonal consequence of Phillips' lemma is proved. See status.scope
+    and README.md for the unformalized portions of the manuscript.
+review:
+  status: agent-reviewed
+  reviewers: ["GPT-6 in Codex"]
+  notes: >-
+    Compared both exposed statements and their hypotheses with the supplied
+    manuscript and inspected the bundling into the original ALCS structure.
+    No independent human review has been reported. This metadata does not claim
+    a Palomar review or a passing remote mechanical report before it occurs.
+alignment:
+  namespace: "PalomarALCS"
+  statements:
+    - source: "Theorem 1.5, thm:zero-class"
+      lean: "PalomarALCS.zero_class"
+      module: "Solution"
+      status: proved
+      note: "Wraps ALCS.zero_class with every system hypothesis written explicitly."
+    - source: "Corollary 1.6, cor:Phi-continuous"
+      lean: "PalomarALCS.continuousOn_Phi"
+      module: "Solution"
+      status: proved
+      note: "Wraps ALCS.continuousOn_Phi for every L-infinity input."
+acknowledgements: "Lean, Mathlib, and their contributors; AI contributions are recorded under automation."

@@ -1,0 +1,9 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "PalomarALCS.zero_class",
+    "PalomarALCS.continuousOn_Phi"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"]
+}

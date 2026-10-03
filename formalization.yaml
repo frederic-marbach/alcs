@@ -3,13 +3,14 @@ version: "v0.4"
 project:
   name: "Continuity of solutions to abstract linear control systems"
   description: >-
-    For abstract linear control systems on real or complex Banach spaces with
+    For abstract linear control systems on Banach spaces with
     L-infinity inputs, the operator norm of the input map tends to zero at time
     zero, and every input response is continuous on the nonnegative time axis.
     The hypotheses are strong continuity of the semigroup, bounded linear input
     maps, and the concatenation identity; no integral representation is assumed.
     The proof uses a diagonal consequence of Phillips' lemma, proved in the
     repository, and a semigroup doubling argument.
+    This gives a positive answer to Weiss' 1989 Problem 2.4.
   authors: ["Frédéric Marbach"]
   responsible_maintainers: ["Frédéric Marbach"]
   license: "Apache-2.0"

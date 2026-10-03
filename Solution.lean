@@ -1,12 +1,20 @@
 module
 
-public import ALCS
+public import ALCS.ContinuityLinfty
 
 public section
 
-/-! # Proved Palomar statements
-The hypotheses below are bundled into the existing ALCS structure.
-Comparator checks these declarations against the independent Challenge.
+/-!
+# Proofs of the statements of `Challenge.lean`
+
+The two declarations below have exactly the statements of `Challenge.lean` (Comparator
+checks this). Their hypotheses are bundled into the structure `ALCS` (Definition 1.1,
+`ALCS/Definitions.lean`) and the proofs are those of the development:
+
+* `PalomarALCS.zero_class` : Theorem 1.5 (`thm:p-infty-zero-class`), from
+  `ALCS.zero_class` in `ALCS/ZeroClass.lean`;
+* `PalomarALCS.continuousOn_Phi` : Corollary 1.6 (`cor:p-infty-solution-continuous`),
+  from `ALCS.continuousOn_Phi` in `ALCS/ContinuityLinfty.lean`.
 -/
 
 open MeasureTheory Filter Topology
@@ -20,8 +28,8 @@ variable {U : Type*} [NormedAddCommGroup U] [NormedSpace 𝕜 U] [CompleteSpace 
 
 local notation "L∞(ℝ₊; " U ")" => Lp U ∞ (volume.restrict (Set.Ici (0 : ℝ)))
 
-/-- Every abstract `L∞` control system is zero-class: the operator norm of its
-input map tends to zero as nonnegative time tends to zero. -/
+/-- **Theorem 1.5** (`thm:p-infty-zero-class`): every abstract linear control system with
+`p = ∞` is zero-class, `‖Φ t‖ → 0` as `t → 0⁺`. -/
 theorem zero_class
     (T : ℝ → X →L[𝕜] X)
     (Φ : ℝ → L∞(ℝ₊; U) →L[𝕜] X)
@@ -42,8 +50,8 @@ theorem zero_class
       Φ := Φ, composition := hΦ_concat }
   exact S.zero_class
 
-/-- For every `L∞` input, the input response of an abstract linear control
-system is continuous on the entire nonnegative time axis, including time zero. -/
+/-- **Corollary 1.6** (`cor:p-infty-solution-continuous`): for `p = ∞` and every input
+`u ∈ L^∞(ℝ₊; U)`, `t ↦ Φ t u` is continuous on `[0, ∞)`. -/
 theorem continuousOn_Phi
     (T : ℝ → X →L[𝕜] X)
     (Φ : ℝ → L∞(ℝ₊; U) →L[𝕜] X)

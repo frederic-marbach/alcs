@@ -7,15 +7,19 @@ public import Mathlib.Analysis.SpecificLimits.Basic
 @[expose] public section
 
 /-!
-# Strongly continuous semigroups of operators
+# Strongly continuous semigroups (Proposition 1.2)
 
-* `C0Semigroup 𝕜 X` : the definition of a strongly continuous semigroup on `X`.
-* `C0Semigroup.exists_exp_bound` : Lemma (semigroup-bound),
-  `‖T t‖ ≤ M * exp (ω * t)` with `ω ≥ 0`, `M ≥ 1`.
-* `C0Semigroup.continuousOn_orbit` : Corollary, `t ↦ T t y₀` is continuous on `[0, ∞)`.
+* `C0Semigroup 𝕜 X` : strongly continuous semigroups `T` on `X` (first item of
+  Definition 1.1): `T 0 = Id`, `T (t + s) = T t ∘ T s` for `t, s ≥ 0`, and `T t y → y`
+  as `t → 0⁺` for every `y`.
+* `C0Semigroup.exists_exp_bound` : `‖T t‖ ≤ M exp(ω t)` for `t ≥ 0`
+  ([Pazy 1983, Chapter 1, Theorem 2.2], used in the proofs of Theorem 1.5 and
+  Proposition 1.3); proved with the Banach–Steinhaus theorem.
+* `C0Semigroup.continuousOn_orbit` : **Proposition 1.2**
+  (`prop:pazy-semigroup-solution-continuous`), `t ↦ T t x°` is continuous on `ℝ₊`.
 
-Design choice: `T` is a function `ℝ → (X →L[𝕜] X)`. All axioms only involve
-nonnegative times, so the values of `T t` for `t < 0` play no role.
+`T` is a function `ℝ → (X →L[𝕜] X)`; all axioms only involve nonnegative times, so the
+values of `T t` for `t < 0` play no role. Completeness of `X` is assumed where needed.
 -/
 
 open Filter Topology
@@ -23,7 +27,7 @@ open Filter Topology
 variable {𝕜 : Type*} [NontriviallyNormedField 𝕜]
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace 𝕜 X]
 
-/-- A strongly continuous semigroup on `X`. -/
+/-- A strongly continuous semigroup on `X` (first item of Definition 1.1). -/
 structure C0Semigroup (𝕜 : Type*) (X : Type*) [NontriviallyNormedField 𝕜]
     [NormedAddCommGroup X] [NormedSpace 𝕜 X] where
   /-- the operators `T t` -/
@@ -39,7 +43,7 @@ namespace C0Semigroup
 
 variable (S : C0Semigroup 𝕜 X)
 
-/-! ## Lemma: exponential bound -/
+/-! ## Exponential bound -/
 
 /-- First step: `‖T t‖ ≤ M` on some interval `[0, τ]` (Banach–Steinhaus). -/
 theorem exists_bound_near_zero [CompleteSpace X] :
@@ -72,7 +76,7 @@ theorem exists_bound_near_zero [CompleteSpace X] :
   have h2 := htbig n
   linarith
 
-/-- Lemma (semigroup-bound): `‖T t‖ ≤ M * exp (ω * t)` for all `t ≥ 0`. -/
+/-- Exponential bound: `‖T t‖ ≤ M * exp (ω * t)` for all `t ≥ 0`, with `ω ≥ 0`, `M ≥ 1`. -/
 theorem exists_exp_bound [CompleteSpace X] :
     ∃ ω ≥ 0, ∃ M ≥ 1, ∀ t, 0 ≤ t → ‖S.T t‖ ≤ M * Real.exp (ω * t) := by
   obtain ⟨τ, hτ, M, hM, hbound⟩ := S.exists_bound_near_zero
@@ -124,7 +128,7 @@ theorem exists_exp_bound [CompleteSpace X] :
     _ ≤ Real.exp (Real.log M / τ * t) * M := mul_le_mul_of_nonneg_right h4 hMpos.le
     _ = M * Real.exp (Real.log M / τ * t) := mul_comm _ _
 
-/-! ## Corollary: continuity of `t ↦ T t y₀` -/
+/-! ## Proposition 1.2: continuity of the orbits -/
 
 /-- `T (a + h) y - T a y = T a (T h y - y)` -/
 theorem orbit_sub (y : X) (a h : ℝ) (ha : 0 ≤ a) (hh : 0 ≤ h) :
@@ -137,7 +141,8 @@ theorem norm_orbit_sub_le (y : X) (a h : ℝ) (ha : 0 ≤ a) (hh : 0 ≤ h) :
   rw [S.orbit_sub y a h ha hh]
   apply ContinuousLinearMap.le_opNorm
 
-/-- Corollary: for every `y₀`, `t ↦ T t y₀` is continuous on `[0, ∞)`. -/
+/-- **Proposition 1.2** (`prop:pazy-semigroup-solution-continuous`). For every `y`,
+`t ↦ T t y` is continuous on `ℝ₊ = [0, ∞)`. -/
 theorem continuousOn_orbit [CompleteSpace X] (y : X) :
     ContinuousOn (fun t => S.T t y) (Set.Ici 0) := by
   obtain ⟨ω, hω, M, hM, hexp⟩ := S.exists_exp_bound
